@@ -1,0 +1,13 @@
+! version = 0.10.3
+! unit = m
+! diameter = False
+     label  position    length    radius
+     hole1      0.14     0.005    0.0016
+     hole2      0.17     0.005    0.0017
+     hole3      0.21     0.005    0.0025
+     hole4      0.26     0.005     0.003
+     hole5       0.3     0.005    0.0027
+     hole6      0.33     0.005    0.0025
+     hole7      0.38     0.005     0.003
+     hole8      0.41     0.005     0.004
+     hole9      0.47     0.005     0.006

@@ -1,0 +1,9 @@
+! version = 0.10.3
+! unit = m
+! diameter = False
+#    x0	     x1	     r0	     r1	       type	  param
+   0	   0.03	   0.002	   0.003	       Cone
+   0.03	   0.05	   0.003	   0.003	       Cone
+   0.05	   0.45	   0.003	   0.0085	       Cone
+   0.45	   0.56	   0.01	   0.02	       Cone
+   0.56	   0.57	   0.02	   0.018	       Cone

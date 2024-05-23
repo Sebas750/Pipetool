@@ -1,0 +1,16 @@
+! version = 0.10.3
+! unit = mm
+! diameter = False
+      label   position     length     radius radius_out
+         BH        160        5.1        2.9        2.9
+         H1        187          3        6.5        6.5
+         H2      215.5          3        6.5        6.5
+         H3      245.3          3        6.5        6.5
+         H4      276.6          3        5.7        5.7
+         H5        301          3        6.5        6.5
+         H6      334.4         10        5.8         10
+         H7        340          3          3          3
+         H8        345          3          3          3
+         H9        350          3          3          3
+        H10        355          3          3          3
+        H11        360          3          3          3
