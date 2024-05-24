@@ -377,7 +377,7 @@ class impedance():
             error = True
         else:
             if is_int(self.parameter_frame_middle_main_frecuency_to_entry.get()):
-                self.to_frecuency = int(self.parameter_frame_middle_main_frecuency_to_entry.get())
+                self.to_frecuency = int(self.parameter_frame_middle_main_frecuency_to_entry.get()) + 1
                 if self.to_frecuency < 0:
                     self.mesagge.set('End frecuency is negative')
                     error = True

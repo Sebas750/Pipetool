@@ -1,0 +1,12 @@
+! unit = millimeter
+! diameter = True
+
+# 
+
+**********Main Bore**********
+# x0	  x1	  D0	  D1	       type	param
+   0	  30	   4	   6	       Cone
+  30	  50	   6	   6	       Cone
+  50	 450	   6	  17	       Cone
+ 450	 560	  20	  40	       Cone
+ 560	 570	  40	  36	       Cone

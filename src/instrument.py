@@ -60,6 +60,11 @@ class instrument():
             '#800000', '#8A2BE2', '#FF6347', '#9932CC', '#FFC0CB', '#FF6347',
             '#0000FF', '#DC143C', '#FF00FF', '#FFC0CB', '#800080', '#E6E6FA',
             '#DB7093', '#ADFF2F', '#808080', '#FA8072', '#87CEEB', '#DC143C', 
+            '#FF69B4', '#FF0000', '#FFA07A', '#C0C0C0', '#00FF00', '#FF7F50',
+            '#FF0000', '#00CED1', '#D8BFD8', '#FF4500', '#FFA500', '#BA55D3',
+            '#800000', '#8A2BE2', '#FF6347', '#9932CC', '#FFC0CB', '#FF6347',
+            '#0000FF', '#DC143C', '#FF00FF', '#FFC0CB', '#800080', '#E6E6FA',
+            '#DB7093', '#ADFF2F', '#808080', '#FA8072', '#87CEEB', '#DC143C', 
             '#FF69B4', '#FF0000', '#FFA07A', '#C0C0C0', '#00FF00', '#FF7F50']
         
         # Variables to store files

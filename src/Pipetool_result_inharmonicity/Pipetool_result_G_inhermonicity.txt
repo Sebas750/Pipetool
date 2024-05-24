@@ -1,0 +1,6 @@
+# Difference between partials (cents) 
+ 2° partial vs 1° partial
+ -278.31327205401806 
+# Difference between partials (cents) 
+ 2° partial vs 1° partial 3° partial vs 2° partial
+ -179.41984771030093 

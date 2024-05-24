@@ -1,0 +1,12 @@
+! version = 0.10.3
+! unit = mm
+! diameter = True
+    label position   length diameter
+       HJ        1      1.6        9
+       H1   227.85      1.6     6.35
+       H2   263.45      1.6      6.3
+       H3   303.25      1.6      5.4
+       H4   433.55      1.6        6
+       H5   468.45      1.6        6
+       H6   505.45      1.6        5
+       H7   563.55      1.6        6
