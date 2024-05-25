@@ -171,12 +171,12 @@ class impedance():
         self.parameter_frame_middle_main_frecuency_to.grid(column=2, row=2, sticky=(W, S, N, E), padx=2, pady=2)
         self.parameter_frame_middle_main_frecuency_to_entry = ttk.Entry(self.parameter_frame_middle_main, width=5)
         self.parameter_frame_middle_main_frecuency_to_entry.grid(column=3, row=2, pady=5)
-        self.parameter_frame_middle_main_frecuency_to_entry.insert(0, '5000')
+        self.parameter_frame_middle_main_frecuency_to_entry.insert(0, '3000')
         self.parameter_frame_middle_main_frecuency_step = ttk.Label(self.parameter_frame_middle_main, text='Step:', anchor='center', justify='center')
         self.parameter_frame_middle_main_frecuency_step.grid(column=4, row=2, sticky=(W, S, N, E), padx=[2, 5], pady=2)
         self.parameter_frame_middle_main_frecuency_step_entry = ttk.Entry(self.parameter_frame_middle_main, width=5)
         self.parameter_frame_middle_main_frecuency_step_entry.grid(column=5, row=2, pady=5)
-        self.parameter_frame_middle_main_frecuency_step_entry.insert(0, '1')
+        self.parameter_frame_middle_main_frecuency_step_entry.insert(0, '2')
         self.parameter_frame_middle_main_embouchure_label = ttk.Label(self.parameter_frame_middle_main, text='Embouchure type', anchor='center', justify='center')
         self.parameter_frame_middle_main_embouchure_label.grid(column=0, row=3, sticky=(E, S, N), padx=2, pady=2)
         self.parameter_frame_middle_main_embouchure = ttk.Checkbutton(self.parameter_frame_middle_main, style='primary.Roundtoggle.Toolbutton')
@@ -229,19 +229,19 @@ class impedance():
         self.parameter_frame_middle_advanced.rowconfigure(2, weight=1)
         self.parameter_frame_middle_advanced.grid_propagate(0)
         
-        self.parameter_frame_middle_advanced_opcion_1_label = ttk.Label(self.parameter_frame_middle_advanced, text='Not implemented:', anchor='center', justify='center')
+        self.parameter_frame_middle_advanced_opcion_1_label = ttk.Label(self.parameter_frame_middle_advanced, text='Entrance radiation:', anchor='center', justify='center')
         self.parameter_frame_middle_advanced_opcion_1_label.grid(column=0, row=0, sticky=(E, S, N), padx=2, pady=2)
-        self.parameter_frame_middle_advanced_opcion_1 = ttk.Combobox(self.parameter_frame_middle_advanced, values=['1', '2'], state='readonly', width=5)
+        self.parameter_frame_middle_advanced_opcion_1 = ttk.Combobox(self.parameter_frame_middle_advanced, values=['closed', 'unflanged', 'infinite_flanged'], state='readonly', width=10)
         self.parameter_frame_middle_advanced_opcion_1.grid(column=1, row=0, sticky=(W), pady=5)
         self.parameter_frame_middle_advanced_opcion_1.current(0)
-        self.parameter_frame_middle_advanced_opcion_2_label = ttk.Label(self.parameter_frame_middle_advanced, text='Not implemented:', anchor='center', justify='center')
+        self.parameter_frame_middle_advanced_opcion_2_label = ttk.Label(self.parameter_frame_middle_advanced, text='Bell radiation:', anchor='center', justify='center')
         self.parameter_frame_middle_advanced_opcion_2_label.grid(column=0, row=1, sticky=(E, S, N), padx=2, pady=2)
-        self.parameter_frame_middle_advanced_opcion_2 = ttk.Combobox(self.parameter_frame_middle_advanced, values=['1', '2'], state='readonly', width=5)
+        self.parameter_frame_middle_advanced_opcion_2 = ttk.Combobox(self.parameter_frame_middle_advanced, values=['unflanged', 'infinite_flanged'], state='readonly', width=10)
         self.parameter_frame_middle_advanced_opcion_2.grid(column=1, row=1, sticky=(W), pady=5)
         self.parameter_frame_middle_advanced_opcion_2.current(0)
-        self.parameter_frame_middle_advanced_opcion_3_label = ttk.Label(self.parameter_frame_middle_advanced, text='Not implemented:', anchor='center', justify='center')
+        self.parameter_frame_middle_advanced_opcion_3_label = ttk.Label(self.parameter_frame_middle_advanced, text='Holes radiation:', anchor='center', justify='center')
         self.parameter_frame_middle_advanced_opcion_3_label.grid(column=0, row=2, sticky=(E, S, N), padx=2, pady=2)
-        self.parameter_frame_middle_advanced_opcion_3 = ttk.Checkbutton(self.parameter_frame_middle_advanced, style='primary.Roundtoggle.Toolbutton')
+        self.parameter_frame_middle_advanced_opcion_3 = ttk.Combobox(self.parameter_frame_middle_advanced, values=['unflanged', 'infinite_flanged'], state='readonly', width=10)
         self.parameter_frame_middle_advanced_opcion_3.grid(column=1, row=2, sticky=(W), pady=5)
 
         # Parameter bottom subframe
@@ -486,12 +486,14 @@ class impedance():
 
         # for the body the impedance is classic, here I used detailed implementation because I need
         # some elements for the window impedance
-        body_physics = InstrumentPhysics(self.instrument, temperature=self.temperature, player=Player(), losses=True) # Player is unused but it is necessary
+        body_physics = InstrumentPhysics(self.instrument, temperature=self.temperature, player=Player(), losses=True,
+        radiation_category={'entrance':self.parameter_frame_middle_advanced_opcion_1.get(), 'bell':self.parameter_frame_middle_advanced_opcion_2.get(), 'holes':self.parameter_frame_middle_advanced_opcion_3.get()}) # Player is unused but it is necessary
         body_imp = FrequentialSolver(body_physics, freq)
 
         # for the window impedance it is necessary to compute the impedance separatly with his
         # own expression or one already implemented, here for infinite flanged pipe
-        window_rad = radiation_model('infinite_flanged', 'window_radiation', body_physics.scaling, body_physics.convention) # the two last options are not really used, but they are needed...
+        # Sebastian: Here im asuming that the ebouchere is a hole, so radioation is the same as the holes
+        window_rad = radiation_model(self.parameter_frame_middle_advanced_opcion_3.get(), 'window_radiation', body_physics.scaling, body_physics.convention) # the two last options are not really used, but they are needed...
 
         rho, celerity = body_physics.get_entry_coefs('rho', 'c')
         radius = 0

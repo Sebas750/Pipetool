@@ -1,8 +1,6 @@
 ! unit = millimeter
 ! diameter = True
 
-# 
-
 **********Main Bore**********
 # x0	  x1	  D0	  D1	       type	param
    0	  30	   4	   6	       Cone

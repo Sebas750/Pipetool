@@ -855,7 +855,7 @@ class instrument():
             if file.split('.')[-1] != 'txt' and file.split('.')[-1] != 'csv':
                 self.instruction.set('Please load valid file')
             else:
-                self.instrument = InstrumentGeometry(main_bore=self.bore_sections, holes_valves=file)       
+                self.instrument = InstrumentGeometry(main_bore=self.bore_sections, holes_valves=file, unit=self.unit, diameter=self.diameter)       
                 holes = self.instrument.get_bore_list(unit=self.unit, diameter=self.diameter, all_fields=False)[1]
                 holes = [[float(i) if is_float(i) else i for i in j] for j in holes]
                 for line in holes:

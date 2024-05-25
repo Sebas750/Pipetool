@@ -1,0 +1,11 @@
+! version = 0.10.3
+! unit = mm
+! diameter = False
+      label   position     length     radius radius_out
+         HJ          1         10          9          8
+         H1        100          5         10          8
+         H2        130          5         10          8
+         H3        160          5         10          8
+         H4        200          7         10          7
+         H5        230          7         10          8
+         H6        260          7         10          8
