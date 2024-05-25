@@ -242,6 +242,7 @@ class impedance():
         self.parameter_frame_middle_advanced_opcion_3_label = ttk.Label(self.parameter_frame_middle_advanced, text='Holes radiation:', anchor='center', justify='center')
         self.parameter_frame_middle_advanced_opcion_3_label.grid(column=0, row=2, sticky=(E, S, N), padx=2, pady=2)
         self.parameter_frame_middle_advanced_opcion_3 = ttk.Combobox(self.parameter_frame_middle_advanced, values=['unflanged', 'infinite_flanged'], state='readonly', width=10)
+        self.parameter_frame_middle_advanced_opcion_3.current(0)
         self.parameter_frame_middle_advanced_opcion_3.grid(column=1, row=2, sticky=(W), pady=5)
 
         # Parameter bottom subframe
