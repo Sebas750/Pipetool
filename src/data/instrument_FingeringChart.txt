@@ -1,8 +1,0 @@
- label    N1    N2    N3    N4    N5    N6    N7    N8    N9   N10   N11   N12
-    HJ     x     x     x     x     x     x     x     x     x     x     x     x
-    H1     x     x     x     x     x     x     x     x     x     o     x     o
-    H2     x     x     x     x     x     x     x     o     x     x     o     o
-    H3     x     x     x     x     x     o     x     x     o     o     o     o
-    H4     x     x     x     o     x     x     o     o     o     o     o     o
-    H5     x     o     x     x     o     o     o     o     o     o     o     o
-    H6     x     x     o     o     o     o     o     o     o     o     o     o

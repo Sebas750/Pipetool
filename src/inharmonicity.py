@@ -368,6 +368,7 @@ class inharmonicity():
             for i, elem in enumerate(self.res_f[note][1:]):
                 frecuency_diff = elem / (natural_fundamental * (i + 2))
                 cent_diff = 1200 * np.log2(frecuency_diff)
+                print(f'{note} {i + 1}° partial: {cent_diff:.2f} cents')
                 nat_note.append(cent_diff)
             nat_in.update({note: nat_note})
         
@@ -375,7 +376,7 @@ class inharmonicity():
 
     def get_octave_cents(self):
         octaves_cents = []
-        for i in range(1, self.number_peaks):
+        for i in range(self.number_peaks - 1):
             octave_overtone = []
             for j in range(len(self.simulation_notes)):
                 octave_overtone.append(self.nat_in[self.simulation_notes[j]][i])
@@ -398,25 +399,16 @@ class inharmonicity():
                 except Exception as e:
                     print(f"Error deleting '{folder_path}': {e}")
             makedirs(folder_path)
-            
+                
             for i, note in enumerate(self.simulation_notes):
                 with open(join(folder_path, f'{name}_{note}_inhermonicity.txt'), 'w') as file:
-                    string = '# Difference between theoric and real partials (cents) \n'
-                    for j in range(len(self.octaves_cent)):
-                        string += f' {j + 1}° partial'
+                    string = '# Inharmonicity between partials (cents) \n'
                     file.write(string + '\n')
-                    string = ''
-                    for j in range(len(self.octaves_cent)):
-                        string += f' {self.octaves_cent[j][i]}'
-                    file.write(string + '\n\n')
-                    
-            for i, note in enumerate(self.simulation_notes):
-                with open(join(folder_path, f'{name}_{note}_inhermonicity.txt'), 'w') as file:
-                    string = '# Difference between partials (cents) \n'
                     for j in range(len(self.inharmo)):
-                        string += f' {j + 2}° partial vs {j + 1}° partial'
-                        file.write(string + '\n')
+                        string += f' {j + 2}° partial vs {j + 1}° partial \n'
+                        file.write(string)
                         file.write(f' {self.inharmo[j][i]} \n')
+                        string = ''
                     
 
             self.message.set('Files exported successfully')

@@ -1063,17 +1063,17 @@ class instrument():
                     positions = [i / 1000 for i in positions]
                     radius = [i / 1000 for i in radius]
                     
-                radius_at_hole = []
-                for i, p in enumerate(positions):
-                    radius_at_hole.append(instrument_test.get_main_bore_radius_at(p).item())
-                # print(radius_at_hole)
+                # radius_at_hole = []
+                # for i, p in enumerate(positions):
+                #     radius_at_hole.append(instrument_test.get_main_bore_radius_at(p).item())
+                # # print(radius_at_hole)
                 
-                if self.diameter:
-                    radius_at_hole = [i * 2 for i in radius_at_hole]
+                # if self.diameter:
+                #     radius_at_hole = [i * 2 for i in radius_at_hole]
                 
-                for i, r in enumerate(radius_at_hole):
-                    if r < radius[i]:
-                        bigger_radius_error = True
+                # for i, r in enumerate(radius_at_hole):
+                #     if r < radius[i]:
+                #         bigger_radius_error = True
             
             # Print errors with some priority, if there are is any error al holes and possibly finger chart delelted and disabled
             if empty_error:

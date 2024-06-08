@@ -1,6 +1,7 @@
-# Difference between partials (cents) 
- 2° partial vs 1° partial
+# Inharmonicity between partials (cents) 
+
+# Inharmonicity between partials (cents) 
+ 2° partial vs 1° partial 
+ -95.01727395495091 
+ 3° partial vs 2° partial 
  -335.94997438402055 
-# Difference between partials (cents) 
- 2° partial vs 1° partial 3° partial vs 2° partial
- 33.597439044622206 
