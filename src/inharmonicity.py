@@ -29,13 +29,13 @@ class inharmonicity():
         self.table_info = table_info
         self.simulation_notes = simulation_notes
         self.notes = notes
-        self.number_peaks = number_peaks
+        self.number_peaks = number_peaks + 1
         self.nat_in = self.natural_inharmonicity()
         self.octaves_cent = self.get_octave_cents()
         self.inharmo = self.inharmo_plot()
         self.tuning = True
-        self.enable_octave = [True] * 3
-        self.enable_inharmo = [True] * 2
+        self.enable_octave = [True] * (number_peaks)
+        self.enable_inharmo = [True] * (number_peaks)
         self.view_frame_middle = None
         self.view_frame_top_inhar = None
         
@@ -111,8 +111,8 @@ class inharmonicity():
         
         self.table_frame_top_label = ttk.Label(self.table_frame_top, text='Number of overtones:')
         self.table_frame_top_label.grid(column=0, row=0, sticky=(N, E, W, S), padx=2, pady=2)
-        self.table_frame_top_number_peaks = ttk.Combobox(self.table_frame_top, values=[1, 2, 3], state='readonly')
-        self.table_frame_top_number_peaks.current(2)
+        self.table_frame_top_number_peaks = ttk.Combobox(self.table_frame_top, values=[1, 2, 3, 4], state='readonly')
+        self.table_frame_top_number_peaks.current(3)
         self.table_frame_top_number_peaks.bind('<<ComboboxSelected>>', lambda event, x='': self.update_table(x))
         self.table_frame_top_number_peaks.grid(column=1, row=0, sticky=(N, E, W, S), padx=2, pady=2)
         
@@ -172,7 +172,7 @@ class inharmonicity():
         self.view_frame_middle.rowconfigure(0, weight=1)
         self.view_frame_middle.grid_propagate(0)
         
-        self.plot()
+        
             
         # Table bottom subframe
         self.view_frame_bottom = ttk.Frame(self.view_frame)
@@ -182,17 +182,18 @@ class inharmonicity():
         self.view_frame_bottom.grid_propagate(0)
         
         self.display_enable_buttons()
+        self.plot()
 
     def update_table(self, x=None):
         self.number_peaks = int(self.table_frame_top_number_peaks.get())
         self.number_peaks += 1
         
-        if self.view_frame_top_inhar:
-            if self.number_peaks == 2:
-                self.tuning = True
-                self.view_frame_top_inhar.state(['disabled'])
-            else:
-                self.view_frame_top_inhar.state(['!disabled'])
+        # if self.view_frame_top_inhar:
+        #     if self.number_peaks == 2:
+        #         self.tuning = True
+        #         self.view_frame_top_inhar.state(['disabled'])
+        #     else:
+        #         self.view_frame_top_inhar.state(['!disabled'])
         
         self.entries = []
         for j, elem in enumerate(self.simulation_notes):
@@ -245,12 +246,13 @@ class inharmonicity():
             self.octaves_cent = self.get_octave_cents()
             self.inharmo = self.inharmo_plot()
             self.display_enable_buttons()
+            print("Table updated")
             self.plot()
             
         
     def display_enable_buttons(self):
         self.enable_octave = [True] * (self.number_peaks - 1)
-        self.enable_inharmo = [True] * (self.number_peaks - 2)
+        self.enable_inharmo = [True] * (self.number_peaks - 1)
         
         for widget in self.view_frame_bottom.winfo_children():
             widget.destroy()
@@ -274,15 +276,15 @@ class inharmonicity():
                 self.view_frame_bottom_frame.bind('<Button-1>', lambda event, x=i: self.change_plot(x))
                 self.view_frame_bottom_frames.append(self.view_frame_bottom_frame)
         else:
-            for i in range(self.number_peaks - 1):
+            for i in range(self.number_peaks):
                 self.view_frame_bottom.columnconfigure(2 * i, weight=1)
                 self.view_frame_bottom.columnconfigure(2 * i + 1, weight=1)
             self.view_frame_bottom.rowconfigure(0, weight=1)
             self.view_frame_bottom.grid_propagate(0)
             
             self.view_frame_bottom_frames = list()
-            for i in range((self.number_peaks) - 2):
-                self.view_frame_bottom_label = ttk.Label(self.view_frame_bottom, text=f'{i + 3}° overtone vs {i + 2}° overtone:', anchor='center', justify='center')
+            for i in range((self.number_peaks) - 1):
+                self.view_frame_bottom_label = ttk.Label(self.view_frame_bottom, text=f'{i + 2}° vs {i + 1}°:', anchor='center', justify='center')
                 self.view_frame_bottom_label.grid(column=2 * i + 1, row=0, sticky=(E, S, N), padx=2, pady=2)
                 self.view_frame_bottom_frame = Frame(self.view_frame_bottom, width=24)
                 self.view_frame_bottom_frame.configure(background=self.colors[i + 3], highlightbackground=self.colors[i + 3], highlightthickness=1)
@@ -303,14 +305,14 @@ class inharmonicity():
         if self.tuning:
             plt.title('Instrument tuning')
             plt.ylabel('Difference between harmonic an overtone (cents)')
-            for i, element in enumerate(self.octaves_cent):
+            for i, element in enumerate(self.octaves_cent[1: self.number_peaks]):
                 if self.enable_octave[i]:
                     plt.plot(element, 'o--', color=self.colors[i])
                     plt.xticks(np.arange(0, len(self.simulation_notes)), self.simulation_notes)
         else:
             plt.title('Instrument inharmonicity')
             plt.ylabel('Inharmonicity between overtones (cents)')
-            for i, element in enumerate(self.inharmo):
+            for i, element in enumerate(self.inharmo[:self.number_peaks + 1]):
                 if self.enable_inharmo[i]:
                     plt.plot(element, 'o--', color=self.colors[i + 3])
                     plt.xticks(np.arange(0, len(self.simulation_notes)), self.simulation_notes)
@@ -352,10 +354,7 @@ class inharmonicity():
             for j in range(len(self.octaves_cent[i])):
                 inhar_elem.append(self.octaves_cent[i + 1][j] - self.octaves_cent[i][j])
             inharmo.append(inhar_elem)
-        
-        for i in range(len(inharmo)):
-            print(inharmo[i])
-        print('\n')
+    
         return inharmo
             
             
@@ -365,10 +364,9 @@ class inharmonicity():
         for note in self.simulation_notes:
             nat_note = list()
             natural_fundamental = self.res_f[note][0]
-            for i, elem in enumerate(self.res_f[note][1:]):
-                frecuency_diff = elem / (natural_fundamental * (i + 2))
+            for i, elem in enumerate(self.res_f[note][0:]):
+                frecuency_diff = elem / (natural_fundamental * (i + 1))
                 cent_diff = 1200 * np.log2(frecuency_diff)
-                print(f'{note} {i + 2}° overtone: {cent_diff:.2f} cents')
                 nat_note.append(cent_diff)
             nat_in.update({note: nat_note})
         
@@ -376,15 +374,12 @@ class inharmonicity():
 
     def get_octave_cents(self):
         octaves_cents = []
-        for i in range(self.number_peaks - 1):
+        for i in range(self.number_peaks):
             octave_overtone = []
             for j in range(len(self.simulation_notes)):
                 octave_overtone.append(self.nat_in[self.simulation_notes[j]][i])
             octaves_cents.append(octave_overtone)
         
-        for i in range(len(octaves_cents)):
-            print(octaves_cents[i])
-        print('\n')
         return octaves_cents
     
     def export(self):
@@ -405,7 +400,7 @@ class inharmonicity():
                     string = '# Inharmonicity between overtones (cents) \n'
                     file.write(string + '\n')
                     for j in range(len(self.inharmo)):
-                        string += f' {j + 3}° overtone vs {j + 2}° overtone \n'
+                        string = f' {j + 2}° overtone vs {j + 1}° overtone \n'
                         file.write(string)
                         file.write(f' {self.inharmo[j][i]} \n')
                         string = ''
