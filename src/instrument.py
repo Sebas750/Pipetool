@@ -1400,19 +1400,19 @@ class instrument():
             # Update plot
             # self.plot()
             
-            # Create files with instrument data
-            path = dirname(abspath(__file__))
-            folder_path = join(path, 'data')
-            if exists(folder_path):
-                try:
-                    rmtree(folder_path)
-                except Exception as e:
-                    print(f"Error deleting '{folder_path}': {e}")
-            makedirs(folder_path)
-            # print(f"Folder 'data' created successfully at '{folder_path}'")
+            # # Create files with instrument data
+            # path = dirname(abspath(__file__))
+            # folder_path = join(path, 'data')
+            # if exists(folder_path):
+            #     try:
+            #         rmtree(folder_path)
+            #     except Exception as e:
+            #         print(f"Error deleting '{folder_path}': {e}")
+            # makedirs(folder_path)
+            # # print(f"Folder 'data' created successfully at '{folder_path}'")
             
-            self.instrument.write_files(generic_name=join(folder_path, 'instrument'), 
-                extension ='.txt', unit=self.unit, diameter=self.diameter)
+            # self.instrument.write_files(generic_name=join(folder_path, 'instrument'), 
+            #     extension ='.txt', unit=self.unit, diameter=self.diameter)
             
             # Create impedance frame
             self.new_impedance_frame = impedance(root=self.root, parent=self.instrument_parent, style=self.style, instrument=self.instrument, 

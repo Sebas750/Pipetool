@@ -109,7 +109,7 @@ class inharmonicity():
         self.table_frame_top.rowconfigure(0, weight=1)
         self.table_frame_top.grid_propagate(0)
         
-        self.table_frame_top_label = ttk.Label(self.table_frame_top, text='Number partials:')
+        self.table_frame_top_label = ttk.Label(self.table_frame_top, text='Number of overtones:')
         self.table_frame_top_label.grid(column=0, row=0, sticky=(N, E, W, S), padx=2, pady=2)
         self.table_frame_top_number_peaks = ttk.Combobox(self.table_frame_top, values=[1, 2, 3], state='readonly')
         self.table_frame_top_number_peaks.current(2)
@@ -220,7 +220,7 @@ class inharmonicity():
         ttk.Label(self.table_frame_middle, text='Note').grid(column=0, row=0, sticky=(N, W, E, S), padx=2, pady=2)
         ttk.Label(self.table_frame_middle, text='Fundamental (Hz)').grid(column=1, row=0, sticky=(N, W, E, S), padx=2, pady=2)
         for i in range(self.number_peaks - 1):
-            ttk.Label(self.table_frame_middle, text=f'{i + 1}° partial (Hz)').grid(column=i + 2, row=0, sticky=(N, W, E, S), padx=2, pady=2)
+            ttk.Label(self.table_frame_middle, text=f'{i + 2}° overtone (Hz)').grid(column=i + 2, row=0, sticky=(N, W, E, S), padx=2, pady=2)
 
         self.entries = []
         for j, elem in enumerate(self.simulation_notes):
@@ -264,7 +264,7 @@ class inharmonicity():
             
             self.view_frame_bottom_frames = list()
             for i in range((self.number_peaks) - 1):
-                self.view_frame_bottom_label = ttk.Label(self.view_frame_bottom, text=f'{i + 1}° partial:', anchor='center', justify='center')
+                self.view_frame_bottom_label = ttk.Label(self.view_frame_bottom, text=f'{i + 2}° overtone:', anchor='center', justify='center')
                 self.view_frame_bottom_label.grid(column=2 * i + 1, row=0, sticky=(E, S, N), padx=2, pady=2)
                 self.view_frame_bottom_frame = Frame(self.view_frame_bottom, width=24)
                 self.view_frame_bottom_frame.configure(background=self.colors[i], highlightbackground=self.colors[i], highlightthickness=1)
@@ -282,7 +282,7 @@ class inharmonicity():
             
             self.view_frame_bottom_frames = list()
             for i in range((self.number_peaks) - 2):
-                self.view_frame_bottom_label = ttk.Label(self.view_frame_bottom, text=f'{i + 2}° partial vs {i + 1}° partial:', anchor='center', justify='center')
+                self.view_frame_bottom_label = ttk.Label(self.view_frame_bottom, text=f'{i + 3}° overtone vs {i + 2}° overtone:', anchor='center', justify='center')
                 self.view_frame_bottom_label.grid(column=2 * i + 1, row=0, sticky=(E, S, N), padx=2, pady=2)
                 self.view_frame_bottom_frame = Frame(self.view_frame_bottom, width=24)
                 self.view_frame_bottom_frame.configure(background=self.colors[i + 3], highlightbackground=self.colors[i + 3], highlightthickness=1)
@@ -302,14 +302,14 @@ class inharmonicity():
         plt.grid()
         if self.tuning:
             plt.title('Instrument tuning')
-            plt.ylabel('Difference between theoric and real partials (cents)')
+            plt.ylabel('Difference between harmonic an overtone (cents)')
             for i, element in enumerate(self.octaves_cent):
                 if self.enable_octave[i]:
                     plt.plot(element, 'o--', color=self.colors[i])
                     plt.xticks(np.arange(0, len(self.simulation_notes)), self.simulation_notes)
         else:
             plt.title('Instrument inharmonicity')
-            plt.ylabel('Difference between partials (cents)')
+            plt.ylabel('Inharmonicity between overtones (cents)')
             for i, element in enumerate(self.inharmo):
                 if self.enable_inharmo[i]:
                     plt.plot(element, 'o--', color=self.colors[i + 3])
@@ -368,7 +368,7 @@ class inharmonicity():
             for i, elem in enumerate(self.res_f[note][1:]):
                 frecuency_diff = elem / (natural_fundamental * (i + 2))
                 cent_diff = 1200 * np.log2(frecuency_diff)
-                print(f'{note} {i + 1}° partial: {cent_diff:.2f} cents')
+                print(f'{note} {i + 2}° overtone: {cent_diff:.2f} cents')
                 nat_note.append(cent_diff)
             nat_in.update({note: nat_note})
         
@@ -402,10 +402,10 @@ class inharmonicity():
                 
             for i, note in enumerate(self.simulation_notes):
                 with open(join(folder_path, f'{name}_{note}_inhermonicity.txt'), 'w') as file:
-                    string = '# Inharmonicity between partials (cents) \n'
+                    string = '# Inharmonicity between overtones (cents) \n'
                     file.write(string + '\n')
                     for j in range(len(self.inharmo)):
-                        string += f' {j + 2}° partial vs {j + 1}° partial \n'
+                        string += f' {j + 3}° overtone vs {j + 2}° overtone \n'
                         file.write(string)
                         file.write(f' {self.inharmo[j][i]} \n')
                         string = ''
