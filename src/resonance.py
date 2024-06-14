@@ -8,6 +8,11 @@ from matplotlib import pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.gridspec as gridspec
 
+# File management
+from shutil import rmtree
+from os import makedirs
+from os.path import dirname, abspath, join, exists
+
 # NumPy
 import numpy as np
 
@@ -117,6 +122,8 @@ class resonance():
         self.table_frame_top.columnconfigure(0, weight=1)
         self.table_frame_top.columnconfigure(1, weight=1)
         self.table_frame_top.columnconfigure(2, weight=1)
+        self.table_frame_top.columnconfigure(3, weight=1)
+        self.table_frame_top.columnconfigure(4, weight=1)
         self.table_frame_top.rowconfigure(0, weight=1)
         self.table_frame_top.grid_propagate(0)
         
@@ -126,6 +133,15 @@ class resonance():
         self.table_frame_top_number_peaks.current(3)
         self.table_frame_top_number_peaks.grid(column=1, row=0, sticky=(N, W, S), padx=2, pady=2)
         self.table_frame_top_number_peaks.bind('<<ComboboxSelected>>', lambda event, x='': self.update_table(x))
+        self.table_frame_top_name_label = ttk.Label(self.table_frame_top, text='Name:', anchor='center', justify='center')
+        self.table_frame_top_name_label.grid(column=2, row=0, sticky=(N, S, W, E), pady=2)
+        self.table_frame_top_name_label.grid_propagate(0)
+        self.table_frame_top_name = ttk.Entry(self.table_frame_top, width=10)
+        self.table_frame_top_name.grid(column=3, row=0, sticky=(N, S, W, E), padx=2, pady=2)
+        self.table_frame_top_name.grid_propagate(0)
+        self.table_frame_top_export = ttk.Button(self.table_frame_top, text='Export to files', command=self.export, style='primary.Outline.TButton')
+        self.table_frame_top_export.grid(column=4, row=0, sticky=(N, W, S), padx=2, pady=2)
+        self.table_frame_top_export.grid_propagate(0)
         
         # Table middle subframe
         self.table_frame_middle = Frame(self.table_frame)
@@ -500,6 +516,38 @@ class resonance():
         if single != self.single_note_display:
             self.single_note_display = [False] * len(self.notes)
             self.plot_geometry()
+    
+    def export(self):
+        print('Exporting...')
+        name = self.table_frame_top_name.get()
+        if name != '':
+            # Create files with instrument data
+            path = dirname(abspath(__file__))
+            folder_path = join(path, f'{name}_resonance')
+            if exists(folder_path):
+                try:
+                    rmtree(folder_path)
+                except Exception as e:
+                    print(f"Error deleting '{folder_path}': {e}")
+            makedirs(folder_path)
+            
+            with open(join(folder_path, f'{name}_resonance.txt'), 'w') as f:
+                f.write('# Resonance table\n')
+                f.write('\n')
+                f.write('Note-Peak Frequency (Hz) Closest pitch (cent) Quality factor\n')
+                for j, elem in enumerate(self.simulation_notes):
+                    for i in range(self.number_peaks):
+                        name = f'{elem}-p{i + 1}'
+                        frec = round(self.res_f[elem][i], 2)
+                        if self.table_info[elem][1][i] > 0:
+                            pitch = f'{self.table_info[elem][2][i]} +{int(self.table_info[elem][1][i])}'
+                        else:
+                            pitch = f'{self.table_info[elem][2][i]} {int(self.table_info[elem][1][i])}'
+                        Q = int(self.res_Q[elem][i])
+                        f.write (f'{name:<9}  {frec:<14}  {pitch:<20}  {Q:<14}\n')
+            self.message.set('Files exported successfully')
+        else:
+            self.message.set('Please enter a name for the folder')
 
 def is_float(s):
     try:

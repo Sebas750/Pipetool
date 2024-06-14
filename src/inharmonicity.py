@@ -394,16 +394,17 @@ class inharmonicity():
                 except Exception as e:
                     print(f"Error deleting '{folder_path}': {e}")
             makedirs(folder_path)
-                
-            for i, note in enumerate(self.simulation_notes):
-                with open(join(folder_path, f'{name}_{note}_inhermonicity.txt'), 'w') as file:
-                    string = '# Inharmonicity between overtones (cents) \n'
+            
+            with open(join(folder_path, f'{name}_inhermonicity.txt'), 'w') as file:
+                for i, note in enumerate(self.simulation_notes):
+                    string = f'# Inharmonicity between overtones (cents) {note}\n'
                     file.write(string + '\n')
                     for j in range(len(self.inharmo)):
                         string = f' {j + 2}° overtone vs {j + 1}° overtone \n'
                         file.write(string)
                         file.write(f' {self.inharmo[j][i]} \n')
                         string = ''
+                    file.write('\n')
                     
 
             self.message.set('Files exported successfully')
