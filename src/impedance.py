@@ -544,6 +544,10 @@ class impedance():
                 self.table_info.update({note: match_freqs_with_notes(f_=f_res, concert_pitch_A=self.concert_pitch, transposition=self.transposition)})
 
         if not recompute:
+            
+            if self.embrouchure: # Shift the x axis to the embouchure to compute the pressure and flow
+                self.instrument.shift_x_axis(abs(float(self.bore_sections[0][0])))
+                
             for note in self.simulation_notes:
                 flow, pressure = body_imp.get_flow_pressure_several_notes(notes=[note], f_interest=[self.res_f_all_fing[note]])
                 normalized_flow = []
@@ -551,7 +555,7 @@ class impedance():
                 for fl in flow:
                     fl_new = []
                     for f in fl:
-                        f = np.abs(np.real(f))
+                        f = np.abs(f)
                         f_max = np.max(f)
                         f = (f/f_max) * 100
                         fl_new.append(f)
@@ -559,7 +563,7 @@ class impedance():
                 for pr in pressure:
                     pr_new = []
                     for p in pr:
-                        p = np.abs(np.real(p))
+                        p = np.abs(p)
                         p_max = np.max(p)
                         p = (p/p_max) * 100
                         pr_new.append(p)
